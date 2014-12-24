@@ -1,7 +1,9 @@
 <html>
 <head>
 <title>Upload your timetable</title>
-
+<link rel="stylesheet" href="/css/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="/css/bootstrap/css/bootstrap-theme.css">
+<script src="/js/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
 	{%if user %} Hello
@@ -9,9 +11,9 @@
 	<a href="{{login_url}}">Sign out</a>
 	<br>Is administrator: {{is_admin}} {% endif %}
 	<div id="qrcode"></div>
-	<script type="text/javascript" src="/static/js/jquery.js"></script>
-	<script type="text/javascript" src="/static/js/jsqr.js"></script>
-	<script type="text/javascript" src="/static/js/main.js"></script>
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/jsqr.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
 	drawQr("{{random_key}}");
