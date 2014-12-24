@@ -1,0 +1,10 @@
+application: hlutimetable
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /static/js
+  static_dir: static/js
+- url: /.*
+  script: main.py
