@@ -21,12 +21,13 @@
 	<div id="dragandrophandler">
 	Drag & Drop Files Here
 	</div>
-	<input type="file" name="file" class="hidden" id="file-upload" /> 
+	<input type="hidden" id="upload-url" value="{{upload_url}}" />
+	<input type="file" name="file" class="hidden" id="file-upload" value="" />
 	<div id="statusbar"></div>
-
-
+	<div id="qrcode"></div>
 	<script type="text/javascript" src="/js/jquery.js"></script>
 	<script src="/js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/js/jsqr.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
 	<script type="text/javascript" src="/js/upload.js"></script>
 	<script type="text/javascript">

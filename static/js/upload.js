@@ -43,8 +43,14 @@ $(document).ready(function() {
 	});
 
 });
+function setNewUploadUrl(){
+	$.get( "/upload-form-ajax", function( data ) {
+		  $( "#upload-url" ).val( data );
+		});
+}
 function sendFileToServer(formData, status) {
-	var uploadURL = "/upload-file"; //Upload URL
+	var uploadURL = $('#upload-url').val();//Upload URL
+	setNewUploadUrl();
 	var extraData = {}; //Extra Data.
 	var jqXHR = $.ajax({
 		xhr : function() {
@@ -70,9 +76,9 @@ function sendFileToServer(formData, status) {
 		cache : false,
 		data : formData,
 		success : function(data) {
+			// Upload done
 			status.setProgress(100);
-
-			$("#status1").append("File upload Done<br>");
+			drawQr(data);
 		}
 	});
 
@@ -127,10 +133,10 @@ function handleFileUpload(files, obj) {
 		alert("Nhiều quá thở không kịp ! Một file thôi.");
 		return;
 	}
-//	if(!endsWith(files[0].name)){
-//		alert("File không phải là excel.");
-//		return;
-//	}
+	if(!endsWith(files[0].name)){
+		alert("File không phải là excel.");
+		return;
+	}
 	//for (var i = 0; i < files.length; i++) {
 		var fd = new FormData();
 		fd.append('file', files[0]);
@@ -157,6 +163,6 @@ function drawQr(str){
 	canvas.setAttribute('height', matrix.pixelWidth);
 	canvas.getContext('2d').fillStyle = 'rgb(0,0,0)';
 	matrix.draw(canvas, 0, 0);
-	$('#qrcode').append(canvas);
+	$('#qrcode').html(canvas);
 }
 
