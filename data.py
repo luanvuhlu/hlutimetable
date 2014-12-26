@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*- 
+import vendor
+vendor.add('lib')
 from xlrd import open_workbook
 import xlrd
 import re
-import logging
 
 class TimeTableFile:
 	subjects=[]
@@ -48,7 +49,6 @@ class TimeTableFile:
 					continue
 				if found:
 					break;
-				logging.debug("value: %s %s %s" % (value, r_index, c_index))
 				if value == u'Sinh viên :':
 					self.student_name = sheet.cell(r_index, c_index+2).value
 					continue
