@@ -10,6 +10,7 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from uploadhandler import parse_timetable
 from models import Student, TimeTable, Subject, SubjectClass, SubjectStudyDay
+import rest
 
 
 
@@ -110,7 +111,20 @@ application = webapp.WSGIApplication([
                                       ('/upload-form-ajax', CreateUploadUrl),
                                       ('/upload-page', UploadPage),
                                       ('/upload', UploadHandler),
+                                      ('/rest/.*', rest.Dispatcher)
                                     ], debug=True)
+
+# configure the rest dispatcher to know what prefix to expect on request urls
+rest.Dispatcher.base_url = "/rest"
+
+# add specific models (with given names) and restrict the supported methods
+rest.Dispatcher.add_models({
+  'student' : (Student, rest.READ_ONLY_MODEL_METHODS),
+  'timetable' : (TimeTable, ['GET_METADATA', 'GET', 'POST', 'PUT']),
+  'subject' : (Subject, rest.READ_ONLY_MODEL_METHODS),
+  'subject_study_day' : (SubjectStudyDay, rest.READ_ONLY_MODEL_METHODS),
+  'subject_class' : (SubjectClass, rest.READ_ONLY_MODEL_METHODS)
+             })
 def main():
     run_wsgi_app(application)
 if __name__ == "__main__":
