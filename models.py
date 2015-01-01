@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 from google.appengine.ext import ndb
 from google.appengine.api import users
-
+from endpoint_messages import TimeTableResponse, StudentResponse, SubjectResponse, SubjectClassResponse, SubjectStudyDayResponse
 PUBLIC_YN=(('Y', 'Y'), ('N', 'N'))
 YN=(('Y', 'Y'), ('N', 'N'))
 CLASS_TYPE=(('Theory', 'T'), ('Seminar', 'S'))
@@ -43,6 +43,17 @@ class Student(ndb.Model):
         if res==None:
             return None
         return res.get()
+    def to_message(self):
+        student=StudentResponse(name=self.name,
+                                student_class=self.student_class,
+                                course=self.course,
+                                alias=self.alias,
+                                email=self.email,
+                                mobile_phone=self.mobile_phone,
+                                telephone=self.telephone,
+                                code=self.code
+                                )
+        return student
 class Subject(ndb.Model):
     subject_code=ndb.StringProperty(required=False)
     subject_name=ndb.StringProperty(required=False)
@@ -74,10 +85,20 @@ class Subject(ndb.Model):
             subject=Subject()
             subject.subject_code=code
             return subject
-        return res.get()   
+        return res.get()  
+    def to_message(self):
+        subject=SubjectResponse(
+                                subject_code=self.subject_code,
+                                subject_name=self.subject_name,
+                                subject_short_name=self.subject_short_name,
+                                course_credit=self.course_credit,
+                                speciality=self.speciality
+                                )
+        return subject
 class TimeTable(ndb.Model):
     random_key=ndb.StringProperty()
     student=ndb.KeyProperty(kind="Student")
+    subject_class=ndb.KeyProperty(kind="SubjectClass", repeated=True)
     year=ndb.StringProperty(required=False)
     semester=ndb.StringProperty(required=False)
     used=ndb.BooleanProperty(default=False)
@@ -85,18 +106,55 @@ class TimeTable(ndb.Model):
     activated=ndb.BooleanProperty(default=True)
     def __unicode__(self):
         return self.student.__str__()
+    def get_subject_messages(self):
+        list_subject_classes=[]
+        for sub in self.subject_class:
+            list_subject_classes.append(sub.get().to_message())
+        return list_subject_classes
+    def to_message(self):
+        student=self.student.get()
+        timetable=TimeTableResponse(student=student.to_message(),
+                              year=self.year, 
+                              semester=self.semester,
+                              subject_class=self.get_subject_messages()
+                              )
+        return timetable
 class SubjectClass(ndb.Model):
     subject=ndb.KeyProperty(kind="Subject")
-    timeTable=ndb.KeyProperty(kind="TimeTable")
+    subject_study_day=ndb.KeyProperty(kind="SubjectStudyDay", repeated=True)
     theory_class=ndb.StringProperty(required=True)
     seminar_class=ndb.StringProperty(required=False)
     start_date=ndb.DateTimeProperty(required=False)
     end_date=ndb.DateTimeProperty(required=False)
     def __unicode__(self):
         return self.subject.__str__()
+    def get_day_messages(self):
+        list_days=[]
+        for day in self.subject_study_day:
+            list_days.append(day.get().to_message())
+        return list_days
+    def to_message(self):
+        subject_class=SubjectClassResponse(
+                                           subject=self.subject.get().to_message(),
+                                           subject_study_day=self.get_day_messages(),
+                                           theory_class=self.theory_class,
+                                           seminar_class=self.seminar_class,
+                                           start_date=self.start_date,
+                                           end_date=self.end_date
+                                           )
+        return subject_class
 class SubjectStudyDay(ndb.Model):
-    subject_class=ndb.KeyProperty(kind="SubjectClass")
     day_name=ndb.StringProperty(required=False)
     day_hours=ndb.StringProperty(required=False)
     day_location=ndb.StringProperty(required=False)
     class_type=ndb.StringProperty(required=False)
+    def __unicode__(self):
+        return self.day_name
+    def to_message(self):
+        subject_study_day=SubjectStudyDayResponse(
+                                                  day_name=self.day_name,
+                                                  day_hours=self.day_location,
+                                                  day_location=self.day_location,
+                                                  class_type=self.class_type
+                                                  )
+        return subject_study_day

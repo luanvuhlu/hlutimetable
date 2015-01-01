@@ -10,7 +10,6 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from uploadhandler import parse_timetable
 from models import Student, TimeTable, Subject, SubjectClass, SubjectStudyDay
-import rest
 
 
 
@@ -74,57 +73,53 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         timetable=TimeTable()
         timetable.populate(random_key=random_key,
                            student=student.key)
-        timetable.put()
+        list_subject_class=[]
         for sub in timetable_ett.subjects:
+            list_day=[]
             subject=Subject.get_or_create_by_code(sub['code'])
             if not subject.key:
                 subject.populate(subject_name=sub['name'])
                 subject.put()
             subject_class=SubjectClass()
             subject_class.populate(subject=subject.key,
-                                  timeTable=timetable.key,
+#                                   timeTable=timetable.key,
                                   theory_class=sub['theory'],
                                   seminar_class=sub['seminar']
                                   )
-            subject_class.put()
             if sub['day_theories']:
                 for d in sub['day_theories']:
                     day=SubjectStudyDay()
-                    day.populate(subject_class=subject_class.key,
+                    day.populate(
+#                                  subject_class=subject_class.key,
                                  day_name=d['number'],
                                  day_hours="%s-%s" % (d['start'], d['end']),
                                  day_location="%s-%s" % (d['location'], d['room']),
                                  class_type='T')
                     day.put()
+                    list_day.append(day.key)
             if sub['day_seminars']:
                 for d in sub['day_seminars']:
                     day=SubjectStudyDay()
-                    day.populate(subject_class=subject_class.key,
+                    day.populate(
+#                                  subject_class=subject_class.key,
                                  day_name=d['number'],
                                  day_hours="%s-%s" % (d['start'], d['end']),
                                  day_location="%s-%s" % (d['location'], d['room']),
                                  class_type='S')
                     day.put()
+                    list_day.append(day.key)
+            subject_class.subject_study_day=list_day
+            subject_class.put()
+            list_subject_class.append(subject_class.key)
+        timetable.subject_class=list_subject_class
+        timetable.put()
         self.response.out.write(random_key);
 application = webapp.WSGIApplication([
                                       ('/', MainPage),
                                       ('/upload-form-ajax', CreateUploadUrl),
                                       ('/upload-page', UploadPage),
-                                      ('/upload', UploadHandler),
-                                      ('/rest/.*', rest.Dispatcher)
+                                      ('/upload', UploadHandler)
                                     ], debug=True)
-
-# configure the rest dispatcher to know what prefix to expect on request urls
-rest.Dispatcher.base_url = "/rest"
-
-# add specific models (with given names) and restrict the supported methods
-rest.Dispatcher.add_models({
-  'student' : (Student, rest.READ_ONLY_MODEL_METHODS),
-  'timetable' : (TimeTable, ['GET_METADATA', 'GET', 'POST', 'PUT']),
-  'subject' : (Subject, rest.READ_ONLY_MODEL_METHODS),
-  'subject_study_day' : (SubjectStudyDay, rest.READ_ONLY_MODEL_METHODS),
-  'subject_class' : (SubjectClass, rest.READ_ONLY_MODEL_METHODS)
-             })
 def main():
     run_wsgi_app(application)
 if __name__ == "__main__":

@@ -1,0 +1,222 @@
+{
+ "kind": "discovery#restDescription",
+ "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/fkjKA6qDUj8NmxiA46awfOmBaDI\"",
+ "discoveryVersion": "v1",
+ "id": "timetable:v1",
+ "name": "timetable",
+ "version": "v1",
+ "description": "TimeTable API v1.",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rest",
+ "baseUrl": "https://hlutimetable.appspot.com/_ah/api/timetable/v1/timetablesv/",
+ "basePath": "/_ah/api/timetable/v1/timetablesv/",
+ "rootUrl": "https://hlutimetable.appspot.com/_ah/api/",
+ "servicePath": "timetable/v1/timetablesv/",
+ "batchPath": "batch",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "TimeTableStudentResponse": {
+   "id": "TimeTableStudentResponse",
+   "type": "object",
+   "properties": {
+    "alias": {
+     "type": "string"
+    },
+    "code": {
+     "type": "string"
+    },
+    "course": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string"
+    },
+    "mobile_phone": {
+     "type": "string"
+    },
+    "name": {
+     "type": "string"
+    },
+    "student_class": {
+     "type": "string"
+    },
+    "telephone": {
+     "type": "string"
+    }
+   }
+  },
+  "TimeTableSubjectClassResponse": {
+   "id": "TimeTableSubjectClassResponse",
+   "type": "object",
+   "properties": {
+    "end_date": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "seminar_class": {
+     "type": "string"
+    },
+    "start_date": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "subject": {
+     "$ref": "TimeTableSubjectResponse"
+    },
+    "subject_study_day": {
+     "type": "array",
+     "items": {
+      "$ref": "TimeTableSubjectStudyDayResponse"
+     }
+    },
+    "theory_class": {
+     "type": "string"
+    }
+   }
+  },
+  "TimeTableSubjectResponse": {
+   "id": "TimeTableSubjectResponse",
+   "type": "object",
+   "properties": {
+    "course_credit": {
+     "type": "string",
+     "format": "int64"
+    },
+    "speciality": {
+     "type": "string"
+    },
+    "subject_code": {
+     "type": "string"
+    },
+    "subject_name": {
+     "type": "string"
+    },
+    "subject_short_name": {
+     "type": "string"
+    }
+   }
+  },
+  "TimeTableSubjectStudyDayResponse": {
+   "id": "TimeTableSubjectStudyDayResponse",
+   "type": "object",
+   "properties": {
+    "class_type": {
+     "type": "string"
+    },
+    "day_hours": {
+     "type": "string"
+    },
+    "day_location": {
+     "type": "string"
+    },
+    "day_name": {
+     "type": "string"
+    }
+   }
+  },
+  "TimeTableTimeTableResponse": {
+   "id": "TimeTableTimeTableResponse",
+   "type": "object",
+   "properties": {
+    "semester": {
+     "type": "string"
+    },
+    "student": {
+     "$ref": "TimeTableStudentResponse"
+    },
+    "subject_class": {
+     "type": "array",
+     "items": {
+      "$ref": "TimeTableSubjectClassResponse"
+     }
+    },
+    "year": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "resources": {
+  "timetable": {
+   "methods": {
+    "getTimeTable": {
+     "id": "timetable.timetable.getTimeTable",
+     "path": "{rdkey}",
+     "httpMethod": "GET",
+     "parameters": {
+      "rdkey": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "rdkey"
+     ],
+     "response": {
+      "$ref": "TimeTableTimeTableResponse"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
+  }
+ }
+}
