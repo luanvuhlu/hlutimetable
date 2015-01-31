@@ -4,6 +4,7 @@ vendor.add('lib')
 from xlrd import open_workbook
 import xlrd
 import re
+from datetime import datetime
 
 class TimeTableFile:
 	subjects=[]
@@ -14,7 +15,14 @@ class TimeTableFile:
 		self.student_class=None
 		self.set_subjects()
 	def get_subject_time(self, txt):
-		tmp=txt.split("\n")[0].split()
+		"""
+			Từ 06/04/2015 đến 17/05/2015:
+			Thứ 5 tiết 3,4 tại E101 Nhà E
+			Thứ 6 tiết 3,4 tại E402 Nhà E
+			Thứ 7 tiết 3,4 tại E101 Nhà E
+		"""
+		tmp=txt.split("\n")[0][:-1].split()
+		
 		try:
 			start=tmp[1]
 			end=tmp[3]
@@ -84,8 +92,8 @@ class TimeTableFile:
 			subject['code']=tmp_sub['code']
 			subject['name']=tmp_sub['name']
 			subject_time=self.get_subject_time(tmp_sub['time1'])
-			subject['start']=subject_time[0]
-			subject['end']=subject_time[1]
+			subject['start']=TimeTableFile.parse_subject_time(subject_time[0])
+			subject['end']=TimeTableFile.parse_subject_time(subject_time[1])
 			if len(tmp_sub['class2']) > 0 and len(tmp_sub['class1']) > len(tmp_sub['class2']):
 				subject['seminar']=tmp_sub['class1']
 				subject['theory']=tmp_sub['class2']
@@ -104,5 +112,16 @@ class TimeTableFile:
 			if subject['name']==name:
 				return subject
 		return None
+	@staticmethod
+	def parse_subject_time(date_str, fm=None):
+		"""
+		default format is: %d/%m/%Y 15/05/2015
+		"""
+		if not fm:
+			fm='%d/%m/%Y';
+		try:
+			return datetime.strptime(date_str, fm)
+		except:
+			return None
 		
 		

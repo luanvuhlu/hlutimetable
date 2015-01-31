@@ -84,7 +84,10 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             subject_class.populate(subject=subject.key,
 #                                   timeTable=timetable.key,
                                   theory_class=sub['theory'],
-                                  seminar_class=sub['seminar']
+                                  seminar_class=sub['seminar'],
+                                  start_date=sub['start'],
+                                  end_date=sub['end']
+                                  
                                   )
             if sub['day_theories']:
                 for d in sub['day_theories']:

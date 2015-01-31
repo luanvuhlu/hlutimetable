@@ -153,7 +153,7 @@ class SubjectStudyDay(ndb.Model):
     def to_message(self):
         subject_study_day=SubjectStudyDayResponse(
                                                   day_name=self.day_name,
-                                                  day_hours=self.day_location,
+                                                  day_hours=self.day_hours,
                                                   day_location=self.day_location,
                                                   class_type=self.class_type
                                                   )
