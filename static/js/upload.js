@@ -13,21 +13,25 @@ $(document).ready(function() {
 	obj.on('dragenter', function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-		$(this).css('border', '2px solid #0B85A1');
+		$(this).removeClass();
+		$(this).addClass('dragenter');
 	});
 	obj.on('dragover', function(e) {
 		e.stopPropagation();
 		e.preventDefault();
 	});
 	obj.on('drop', function(e) {
-
 		$(this).css('border', '2px dotted #0B85A1');
+		$(this).removeClass();
+		$(this).addClass('drop');
 		e.preventDefault();
 		var files = e.originalEvent.dataTransfer.files;	
 
 		//We need to send dropped files to Server
 		handleFileUpload(files, statusbarObj);
 	});
+	
+	// Khong cho phep keo tha vao vung khac
 	$(document).on('dragenter', function(e) {
 		e.stopPropagation();
 		e.preventDefault();
@@ -35,7 +39,8 @@ $(document).ready(function() {
 	$(document).on('dragover', function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-		obj.css('border', '2px dotted #0B85A1');
+		$(obj).removeClass();
+//		obj.css('border', '2px dotted #0B85A1');
 	});
 	$(document).on('drop', function(e) {
 		e.stopPropagation();
@@ -43,6 +48,7 @@ $(document).ready(function() {
 	});
 
 });
+
 function setNewUploadUrl(){
 	$.get( "/upload-form-ajax", function( data ) {
 		  $( "#upload-url" ).val( data );
@@ -79,16 +85,29 @@ function sendFileToServer(formData, status) {
 			// Upload done
 			status.setProgress(100);
 			drawQr(data);
+			status.setComplete();
+			clearErrorMsg();
 		}
 	});
 
 	status.setAbort(jqXHR);
 }
-
+function clearErrorMsg(){
+	showErrorMsg("");
+}
+function showErrorMsg(str){
+	if(str != ''){
+		$('.progressBar').html('Error !');
+		$('#qrcode').html('');
+		
+	}
+	$(".error-msg").html(str);
+}
 function createStatusbar(obj) {
 	this.statusbar = $("<div class='statusbar'></div>");
-	this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
-	this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
+	// Khong hien thi ten va size file
+//	this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
+//	this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
 	this.progressBar = $("<div class='progressBar'><div></div></div>")
 			.appendTo(this.statusbar);
 	this.abort = $("<div class='abort'>Abort</div>").appendTo(this.statusbar);
@@ -104,15 +123,14 @@ function createStatusbar(obj) {
 		} else {
 			sizeStr = sizeKB.toFixed(2) + " KB";
 		}
-
-		this.filename.html(name);
-		this.size.html(sizeStr);
+//		this.filename.html(name);
+//		this.size.html(sizeStr);
 	}
 	this.setProgress = function(progress) {
 		var progressBarWidth = progress * this.progressBar.width() / 100;
 		this.progressBar.find('div').animate({
 			width : progressBarWidth
-		}, 10).html(progress + "% ");
+		}, 10).html('Uploading... '+progress + "% ");
 		if (parseInt(progress) >= 100) {
 			this.abort.hide();
 		}
@@ -124,17 +142,20 @@ function createStatusbar(obj) {
 			sb.hide();
 		});
 	}
+	this.setComplete = function() {
+		this.progressBar.find('div').html("Complete !");
+	}
 }
 function endsWith(str) {
     return str.indexOf(".xls", str.length - ".xls".length) !== -1 || str.indexOf(".xlsx", str.length - ".xlsx".length) !== -1;
 }
 function handleFileUpload(files, obj) {
 	if(files.length > 1){
-		alert("Nhiều quá thở không kịp ! Một file thôi.");
+		showErrorMsg("Nhiều quá thở không kịp ! Một file thôi.");
 		return;
 	}
 	if(!endsWith(files[0].name)){
-		alert("File không phải là excel.");
+		showErrorMsg("File không phải là excel.");
 		return;
 	}
 	//for (var i = 0; i < files.length; i++) {
@@ -146,23 +167,5 @@ function handleFileUpload(files, obj) {
 		sendFileToServer(fd, status);
 	//}
 }
-function drawQr(str){
-	var qr = new JSQR();
-	var code = new qr.Code();
-	code.encodeMode = code.ENCODE_MODE.UTF8_SIGNATURE;
-	code.version = code.DEFAULT;
-	code.errorCorrection = code.ERROR_CORRECTION.H;
-	var input = new qr.Input();
-	input.dataType = input.DATA_TYPE.TEXT;
-	input.data = {
-	     "text": str
-	};
-	var matrix = new qr.Matrix(input, code);
-	var canvas = document.createElement('canvas');
-	canvas.setAttribute('width', matrix.pixelWidth);
-	canvas.setAttribute('height', matrix.pixelWidth);
-	canvas.getContext('2d').fillStyle = 'rgb(0,0,0)';
-	matrix.draw(canvas, 0, 0);
-	$('#qrcode').html(canvas);
-}
+
 

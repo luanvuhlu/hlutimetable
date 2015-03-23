@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Upload your timetable{% endblock %}
+{% block static %}
+<style type="text/css">
+#dragandrophandler {
+	border: 2px dotted #0B85A1;
+	color: #92AAB0;
+	text-align: left;
+	vertical-align: middle;
+	padding: 10px 10px 10 10px;
+	margin-bottom: 10px;
+	font-size: 200%;
+	width:100%;
+	padding-bottom:20px;
+	padding-top:20px;
+	text-align:center;
+}
+#wrap{
+text-align:center;
+margin-top: 5%;
+}
+.statusbar .progressBar{
+background: #42A5F5 ;
+color: white;
+}
+#dragandrophandler.dragenter{
+border: none;
+background:#64B5F6;
+color: white;
+}
+#dragandrophandler.drop{
+border: none;
+background: #1E88E5;
+color: white;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="col-md-4 col-md-offset-4" id="wrap">
+<div class="text-danger error-msg text-left"></div>
+	<div id="dragandrophandler">
+	Drag & Drop Files Here
+	</div>
+	<input type="hidden" id="upload-url" value="{{upload_url}}" />
+	<input type="file" name="file" class="hidden" id="file-upload" value="" />
+	<div id="statusbar"></div>
+	<div id="qrcode"></div>
+	</div>
+{% endblock %}
+{% block script-more %}
+<script type="text/javascript" src="/js/upload.js"></script>
+{% endblock %}
+

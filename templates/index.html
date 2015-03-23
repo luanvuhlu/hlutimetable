@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Upload your timetable{% endblock %}
+{% block content %}
+	{%if user %} Hello
+	<b>{{nickname}}</b>
+	<a href="{{login_url}}">Sign out</a>
+	<br>Is administrator: {{is_admin}} {% endif %}
+	<div id=qrcode><a href="/upload-page">Upload Page</a></div>
+	<div id="link"><a href="/upload-page">Upload Page</a></div>
+{% endblock %}
+{% block script-more %}
+	<script type="text/javascript">
+$(document).ready(function(){
+	drawQr("{{random_key}}");
+})
+</script>
+{% endblock %}
+
