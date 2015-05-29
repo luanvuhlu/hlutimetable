@@ -14,13 +14,12 @@ from uploadhandler import CreateUploadUrl, UploadHandler
 
 
 
-class MainPage(webapp.RequestHandler):
+class MainPage(webapp.RequestHandler): 
     def get(self):
         user = users.get_current_user()
-
         if user:
             # Hien tai cho redirect thang sang trnag upload page
-            self.redirect('/upload-page', True)
+#             self.redirect('/upload-page', True)
             random_key=''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(30))
             template_values = {
             'user':user,
@@ -30,7 +29,7 @@ class MainPage(webapp.RequestHandler):
             'is_admin': users.is_current_user_admin()
             }
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
+            path = os.path.join(os.path.dirname(__file__), 'templates/index-beta.html')
             self.response.out.write(template.render(path, template_values))
         else:
             self.redirect(users.create_login_url(self.request.uri))
