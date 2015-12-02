@@ -1,0 +1,167 @@
+{% extends "base.html" %} {% block title %}Kiểm tra{%endblock %}
+{%block static %}
+<style type="text/css">
+	
+</style>
+{% endblock %} {% block content %}
+<div class="col-sm-10 col-sm-offset-1">
+	<h2 class="text-center">Tình trạng học</h2>
+	<form>
+  <div class="form-group">
+    <label for="p1">Giáo dục chuyên nghiệp - phần bắt buộc</label>
+    <input type="number" min="0" class="form-control part-input" id="p1" >
+    <span class="warn-msg"></span>
+  </div>
+  <div class="form-group">
+    <label for="p2">Giáo dục chuyên nghiệp - tự chọn - kiến thức cơ sở ngành</label>
+    <input type="number" min="0" class="form-control part-input" id="p2" >
+    <span class="warn-msg"></span>
+  </div>
+  <div class="form-group">
+    <label for="p3">Giáo dục đại cương - phần bắt buộc chung</label>
+    <input type="number" min="0" class="form-control part-input" id="p3" >
+    <span class="warn-msg"></span>
+  </div>
+  <div class="form-group">
+    <label for="p4">Giáo dục đại cương - phần tự chọn</label>
+    <input type="number" min="0" class="form-control part-input" id="p4" >
+    <span class="warn-msg"></span>
+  </div>
+  <div class="form-group">
+    <label for="p5">Giáo dục chuyên nghiệp - tự chọn - kiến thức chuyên ngành và các môn kỹ năng</label>
+    <input type="number" min="0" class="form-control part-input" id="p5" >
+    <span class="warn-msg"></span>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="graduationThesis"> Viết khóa luận
+    </label>
+  </div>
+  <button type="button" class="btn btn-lg btn-success" id="btnOK">OK</button>
+</form>
+</div>
+<div id="dialogResult" title="Thông báo">
+</div>
+{% endblock %} 
+{% block script-more %}
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<script src="/js/jquery-ui.js"></script>
+<script>
+function checkField(obj){
+	try{
+		$(obj).val($(obj).val().trim());
+		var value=$(obj).val() === "" ? 0 : parseInt($(obj).val());
+		if(value < 0){
+			$(obj).next().html('Số tín chỉ phải lớn hơn 0').css('display', 'inline');
+			enableButton(false);
+			return;
+		}
+		if($(obj).attr('id') === "p1" && value > 60){
+			$(obj).next().html('Số tín chỉ của bạn vượt quá mức bình thường(60 tín chỉ)').css('display', 'inline');
+			return;
+		}
+		$(obj).next().html('').css('display', 'none');
+	}catch(e){
+		console.log(e);
+		enableButton(false);
+	}
+}
+function enableButton(enable){
+	if(enable === true){
+		$('#btnOK').removeAttr('disabled');
+	}else{
+		$('#btnOK').attr("disabled", true);
+	}
+	 
+}
+function getField(){
+	var parts=[], tmpInt=0;;
+	try{
+		for(var i=1; i<6; i++){
+			$('#p'+i).val($('#p'+i).val().trim());
+			tmpInt = $('#p'+i).val() === "" ? 0 : parseInt($('#p'+i).val());
+			if(tmpInt < 0 ){
+				return [];
+			}
+			if(tmpInt < 0 ){
+				return [];
+			}
+			parts.push(tmpInt);
+		}
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+	return parts;
+}
+function cal(parts, kl){
+	if(parts.length === 0){
+		setDialogContent("Nhập không hợp lệ! <br />Vui lòng nhập chữ số và không nhỏ hơn 0.");
+		return;
+	}
+	if(parts.length <5 ){
+		setDialogContent("Đã có lỗi xảy ra. Vui lòng thử lại");
+		return;
+	}
+	var partSum=parts[0]+parts[1]+parts[2]+parts[3]+parts[4];
+	if(partSum === 0){
+		setDialogContent("Bạn chưa học gì cả!<br />Chắc bạn đùa.");
+		return;
+	}
+	var msg=[], part25=parts[1]+parts[4];
+	if(parts[0] < 60){
+		msg.push("<p> <b>Khối Giáo dục chuyên nghiệp phần bắt buộc</b> yêu cầu tối thiểu 60 tín chỉ. Còn thiếu "+(60-parts[0])+" tín chỉ</p>");
+	}
+	if(parts[2] < 19){
+		msg.push("<p> <b>Khối Giáo dục đại cương phần bắt buộc</b> yêu cầu tối thiểu 19 tín chỉ. Còn thiếu "+(19-parts[2])+" tín chỉ</p>");
+	}
+	if(parts[3] < 5){
+		msg.push("<p> <b>Khối Giáo dục đại cương phần tự chọn</b> yêu cầu tối thiểu 5 tín chỉ. Còn thiếu "+(5-parts[3])+" tín chỉ</p>");
+	}
+	if(kl && part25 < 25){
+		msg.push("<p> <b>Khối Giáo dục chuyên nghiệp phần tự chọn</b> yêu cầu tối thiểu 25 tín chỉ. Còn thiếu "+(25-part25)+" tín chỉ</p>");
+	}
+	if(!kl && part25 < 35){
+		msg.push("<p> <b>Khối Giáo dục chuyên nghiệp phần tự chọn</b> yêu cầu tối thiểu 35 tín chỉ. Còn thiếu "+(35-part25)+" tín chỉ</p>");
+	}
+	if(msg.length === 0){
+		if((kl && partSum < 110) || !kl && partSum < 120){
+			msg.push("Bạn đã đạt mức tối thiểu của các phần nhưng tổng số tín chỉ chưa đủ 120. Còn thiếu "+(kl ? 110-partSum : 120-partSum)+" tín chỉ");
+		}else{
+			msg.push("Có vẻ mọi thứ đều OK");			
+		}
+	}
+	
+	setDialogContent(msg.join(""));
+	
+	
+}
+function setDialogContent(msg){
+	$("#dialogResult").html(msg);
+	$("#dialogResult").dialog('open');
+}
+ 	$(document).ready(function(){
+ 		$('.part-input').keyup(function(){
+ 			checkField(this);
+ 		});
+ 		$("#dialogResult").dialog({
+ 			  autoOpen: false,
+ 			 modal: true,
+			minWidth: 320,
+ 			 buttons: [
+ 			          {
+ 			            text: "Ok",
+ 			            click: function() {
+ 			              $( this ).dialog( "close" );
+ 			            }
+ 			          }
+ 			        ]
+ 		});
+ 		$('#btnOK').click(function(){
+ 			var parts=getField();
+ 			console.log(parts);
+ 			cal(parts, document.getElementById('graduationThesis').checked);
+ 		});
+ 	});
+ </script>
+{% endblock %}

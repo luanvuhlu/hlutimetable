@@ -1,0 +1,170 @@
+{% extends "base.html" %} {% block title %}Thông tin{%endblock %}
+{%block static %}
+<style type="text/css">
+#formTest {
+	margin-top: 10px;
+}
+</style>
+{% endblock %} {% block content %}
+<div class="col-sm-10 col-sm-offset-1">
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation"><a href="#mark" aria-controls="home"
+			role="tab" data-toggle="tab">Mark</a></li>
+				<li role="presentation"><a href="#diploma"
+					aria-controls="profile" role="tab" data-toggle="tab">Diploma</a></li>
+		<li role="presentation" class="active"><a href="#condition"
+			aria-controls="messages" role="tab" data-toggle="tab">Condition</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane" id="mark">
+			<div>
+				<h3>Bảng quy đổi điểm</h3>
+			</div>
+			<table summary="" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Số</th>
+						<th>Chữ</th>
+						<th>Quy đổi</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="danger">
+						<td>1</td>
+						<td>Từ 4 đến dưới 5</td>
+						<td>D</td>
+						<td>1.0</td>
+					</tr>
+					<tr class="warning">
+						<td>2</td>
+						<td>Từ 5 đến dưới 5.5</td>
+						<td>D+</td>
+
+						<td>1.5</td>
+					</tr>
+					<tr class="info">
+						<td>3</td>
+						<td>Từ 5.5 đến dưới 6.5</td>
+						<td>C</td>
+
+						<td>2.0</td>
+					</tr>
+					<tr class="danger">
+						<td>4</td>
+						<td>Từ 6.5 đến dưới 7</td>
+						<td>C+</td>
+
+						<td>2.5</td>
+					</tr>
+					<tr class="success">
+						<td>5</td>
+						<td>Từ 7 đến dưới 8</td>
+						<td>B</td>
+
+						<td>3.0</td>
+					</tr>
+					<tr class="warning">
+						<td>6</td>
+						<td>Từ 8 đến dưới 8.5</td>
+						<td>B+</td>
+
+						<td>3.5</td>
+					</tr>
+					<tr class="success">
+						<td>7</td>
+						<td>Từ 8.5 đến dưới 9</td>
+						<td>A</td>
+
+						<td>3.7</td>
+					</tr>
+					<tr class="info">
+						<td>8</td>
+						<td>Từ 9 trở lên</td>
+						<td>A+</td>
+						<td>4.0</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="diploma">
+			<div>
+				<h3>Bảng quy đổi loại bằng</h3>
+			</div>
+			<table summary="" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Bằng</th>
+						<th>Điểm trung bình hệ 4</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="danger">
+						<td>Trung bình</td>
+						<td>Từ 2.00 đến dưới 2.50</td>
+					</tr>
+					<tr class="warning">
+						<td>Khá</td>
+						<td>Từ 2.50 đến dưới 3.20</td>
+					</tr>
+					<tr class="info">
+						<td>Giỏi</td>
+						<td>Từ 3.20 đến dưới 3.60</td>
+					</tr>
+					<tr class="success">
+						<td>Xuất sắc</td>
+						<td>Từ 3.60 trở lên</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div role="tabpanel" class="tab-pane active" id="condition">
+			<div>
+				<h3>Cấu trúc chương trình học</h3>
+			</div>
+			<table summary="" id="structTbl"
+				class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Tên</th>
+						<th>Điều kiện</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="danger">
+						<td>1</td>
+						<td><a href="/structure#ĐạiCương">Giáo dục đại cương</a></td>
+						<td>Tối thiểu 24 tín chỉ, trong đó phần bắt buộc 19 tín chỉ
+							và phần tự chọn tối thiểu 5 tín chỉ</td>
+					</tr>
+					<tr class="info">
+						<td>2</td>
+						<td><a href="/structure#ChuyênNghiệp">Giáo dục chuyên
+								nghiệp</a></td>
+						<td>Tối thiểu 85 tín chỉ, trong đó phần bắt buộc 60(có thể
+							trên 60) tín chỉ và phần tự chọn tối thiểu 25 tín chỉ</td>
+					</tr>
+					<tr class="success">
+						<td>3</td>
+						<td><a href="/structure#KhóaLuận">Viết khóa luận hoặc
+								tương đương</a></td>
+						<td>Nếu không viết khóa luận. Khối Giáo dục chuyên nghiệp phần tự chọn cần bổ sung thêm 10 tín chỉ, tức tối thiểu phần đó phải đạt 35 tín chỉ.
+						<br />Các vấn đề khác vui lòng vào xem chi tiết.
+						 </td>
+					</tr>
+					<tr class="warning">
+						<td>4</td>
+						<td>Khác</td>
+						<td>Tổng tất cả tín chỉ phải từ 120 tín chỉ trở lên</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %} {% block script-more %}
+{% endblock %}

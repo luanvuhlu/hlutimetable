@@ -3,17 +3,39 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{% endblock %}</title> {% block base-static %}
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="/css/main.css">
 {% endblock %} {% block static %}{% endblock %}
 </head>
 <body>
+	<nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Noname</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/ViewInfo">Xem thông tin</a></li>
+            <li><a href="/structure">Cấu trúc chương trình học</a></li>
+            <li><a href="/test?t=m">Tính điểm trung bình</a></li>
+            <li><a href="/test?t=c">Kiểm tra tình trạng học</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+	
 	<div class="container-fluid">
 		<div class="row">{% block content %} {% endblock %}</div>
 	</div>
 	<script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
+	<script src="/css/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/js/jsqr.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
 	{% block script-more %} {% endblock %}

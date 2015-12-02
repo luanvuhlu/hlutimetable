@@ -1,18 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Upload your timetable{% endblock %}
+{% block title %}Tra cứu thông tin{% endblock %}
+{% block static %}
+<style>
+a:HOVER {
+	text-decoration: none;
+}
+#extension{
+	margin-top: 50px;
+}
+</style>
+{% endblock %}
 {% block content %}
-	{%if user %} Hello
-	<b>{{nickname}}</b>
-	<a href="{{login_url}}">Sign out</a>
-	<br>Is administrator: {{is_admin}} {% endif %}
-	<div id=qrcode><a href="/upload-page">Upload Page</a></div>
-	<div id="link"><a href="/upload-page">Upload Page</a></div>
+	<div class="col-xs-10 col-xs-offset-1">
+	<p>
+		Website tạo ra nhằm mục đích giúp các bạn sinh viên tìm hiểu quy chế học của trường Đại học Luật Hà Nội. Xin lưu ý, tất cả các nội dung trên website đều mang ý hiểu về quy chế của trường của người tạo, nên tôi sẽ hoàn toàn không chịu trách nhiệm trong quá trình người dùng sử dụng các nội dung đó.
+	</p>
+	<p>
+		<b>Chú ý: </b>Khối Giáo dục chuyên nghiệp phần bắt buộc trên thực tế có thể lớn hơn 60 tín chỉ. 
+		Phần tín chỉ này có thể sẽ ảnh hưởng đến số tín chỉ của Khối Giáo dục chuyên nghiệp phần tự chọn và tổng số tín chỉ. Tuy nhiên, cho đến nay vẫn chưa có thông báo chính thức về vấn đề này nên website sẽ không tính chương trình học dựa trên số lượng tín chỉ vượt quá này. 
+		Do vậy ở đây sẽ tính chuẩn theo quy chế và thông báo, vui lòng đọc <a href="/structure">tại đây</a> để biết chi tiết.
+	</p>
+	
+	<p id="extension" class="text-center">
+		<h4>Nếu bạn chưa biết thì còn có một tiện ích mở rộng có thể tính trực tiếp điểm của bạn trên trang web. <br /><a target="_blank" href="https://chrome.google.com/webstore/detail/hlu-mark-calculation/ggneaiakklgfagahbcdncfpgeimnpfdk/reviews"><span class="label label-success">Nhấn vào đây</span></a> để cài đặt.</h4></h4>
+	</p>
+	</div>
 {% endblock %}
-{% block script-more %}
-	<script type="text/javascript">
-$(document).ready(function(){
-	drawQr("{{random_key}}");
-})
-</script>
-{% endblock %}
+
 

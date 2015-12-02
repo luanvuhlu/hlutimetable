@@ -11,8 +11,9 @@ handlers:
   static_dir: static/js
 - url: /css
   static_dir: static/css
-- url: /img
-  static_dir: static/img
+- url: /images
+  static_dir: static/images
+  
 - url: /.*
   script: main.py
 libraries:

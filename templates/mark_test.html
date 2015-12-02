@@ -1,0 +1,180 @@
+{% extends "base.html" %} {% block title %}Kiểm tra{%endblock %}
+{%block static %}
+<style type="text/css">
+
+</style>
+{% endblock %} {% block content %}
+<div class="col-sm-10 col-sm-offset-1">
+	<h2 class="text-center">Tính điểm trung bình</h2>
+	<form class="form-horizontal">
+<div class="form-group">
+    <label for="m4" class="col-sm-4 col-md-3 control-label">Dưới 4(F)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m4" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m45" class="col-sm-4 col-md-3 control-label">Từ 4 đến dưới 5(D)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m45" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m555" class="col-sm-4 col-md-3 control-label">Từ 5 đến dưới 5.5(D+)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m555" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m5565" class="col-sm-4 col-md-3 control-label">Từ 5.5 đến dưới 6.5(C)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m5565" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m657" class="col-sm-4 col-md-3 control-label">Từ 6.5 đến dưới 7(C+)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m657" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m78" class="col-sm-4 col-md-3 control-label">Từ 7 đến dưới 8(B)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m78" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m885" class="col-sm-4 col-md-3 control-label">Từ 8 đến dưới 8.5(B+)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m885" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m859" class="col-sm-4 col-md-3 control-label">Từ 8.5 đến dưới 9(A)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m859" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="m9" class="col-sm-4 col-md-3 control-label">Từ 9 trở lên(A+)</label>
+    <div class="col-sm-8 col-md-8">
+      <input type="number" min="0" class="form-control mark-field" id="m9" />
+      <span class="warn-msg"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <button type="button" class="btn btn-lg btn-success" id="btnOK">Ok</button>
+    </div>
+  </div>
+</form>
+</div>
+<div id="dialogResult" title="Basic dialog">
+</div>
+{% endblock %} 
+{% block script-more %}
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<script src="/js/jquery-ui.js"></script>
+<script>
+function checkField(obj){
+	try{
+		$(obj).val($(obj).val().trim());
+		var value=$(obj).val() === "" ? 0 : parseInt($(obj).val());
+		if(value < 0){
+			$(obj).next().html('Số tín chỉ phải lớn hơn 0').css('display', 'inline');
+			enableButton(false);
+		}
+		$(obj).next().html('').css('display', 'none');
+	}catch(e){
+		console.log(e);
+		enableButton(false);
+	}
+}
+function enableButton(enable){
+	if(enable === true){
+		$('#btnOK').removeAttr('disabled');
+	}else{
+		$('#btnOK').attr("disabled", true);
+	}
+	 
+}
+function getField(){
+	var parts=[], tmpInt=0;;
+	try{
+		$('.mark-field').each(function(){
+			$(this).val($(this).val().trim());
+			tmpInt = $(this).val() === "" ? 0 : parseInt($(this).val());
+			if(tmpInt < 0 ){
+				return [];
+			}
+			if(tmpInt < 0 ){
+				return [];
+			}
+			parts.push(tmpInt);
+		});
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+	return parts;
+}
+function cal(parts, kl){
+	if(parts.length === 0){
+		setDialogContent("Nhập không hợp lệ! <br />Vui lòng nhập chữ số và không nhỏ hơn 0.");
+		return;
+	}
+	if(parts.length > 9 ){
+		setDialogContent("Đã có lỗi xảy ra. Vui lòng thử lại");
+		return;
+	}
+	var partSum=0;
+	parts.map(function(val){
+		partSum+=val;
+	});
+	if(partSum === 0){
+		setDialogContent("Bạn chưa học gì cả!<br />Chắc bạn đùa.");
+		return;
+	}
+	var sum = parts[1]*10+parts[2]*15+parts[3]*20+parts[4]*25+parts[5]*30+parts[6]*35+parts[7]*37+parts[8]*40,
+		sumTc = parts[0]+parts[1]+parts[1]+parts[2]+parts[3]+parts[4]+parts[5]+parts[6]+parts[7]+parts[8], average=0.0;
+	average = sum/10/sumTc;
+	setDialogContent("Điểm trung bình của bạn là: <b>"+average.toFixed(1)+"</b> trên tổng số "+sumTc+" tín chỉ.");
+}
+function setDialogContent(msg){
+	$("#dialogResult").html(msg);
+	$("#dialogResult").dialog('open');
+}
+ 	$(document).ready(function(){
+ 		$('.part-input').keyup(function(){
+ 			checkField(this);
+ 		});
+ 		$("#dialogResult").dialog({
+ 			  autoOpen: false,
+ 			 modal: true,
+			minWidth: 320,
+ 			 buttons: [
+ 			          {
+ 			            text: "Ok",
+ 			            click: function() {
+ 			              $( this ).dialog( "close" );
+ 			            }
+ 			          }
+ 			        ]
+ 		});
+ 		$('#btnOK').click(function(){
+ 			var parts=getField();
+ 			console.log(parts);
+ 			cal(parts);
+ 		});
+ 	});
+ </script>
+ </script>
+{% endblock %}

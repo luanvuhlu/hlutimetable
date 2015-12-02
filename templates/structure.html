@@ -1,0 +1,58 @@
+{% extends "base.html" %} 
+{% block title %}Cấu trúc chương trình{%endblock %} 
+{% block static %}
+<style>
+body{
+	min-height: 980px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="col-sm-10 col-sm-offset-1">
+	<div class="row">
+	<div class="col-sm-12">
+		<a id="ĐạiCương" href="#ĐạiCương"><h2>Giáo dục đại cương</h2></a>
+		</div>
+		<div class="col-sm-12">
+			Phải đảm bảo tối thiểu 24 tín chỉ, trong đó 19 tín chỉ phần bắt buộc và 5 tín chỉ phần tự chọn.
+			<p>
+				Phần tự chọn cố định tối thiểu 5 tín chỉ. Trong cuốn "<i>Chương trình đào tạo</i>" nói "<i>6 tín chỉ</i>" nhưng theo thông báo mới thì điều này đã thay đổi, 5 tín chỉ là đủ.
+			</p>
+		</div>
+	</div>
+	<div class="row">
+	<div class="col-sm-12">
+		<a id="ChuyênNghiệp" href="#ChuyênNghiệp"><h2>Giáo dục chuyên nghiệp</h2></a>
+		</div>
+		<div class="col-sm-12">
+			Phải đảm bảo tối thiểu 85 tín chỉ, trong đó 60 tín chỉ bắt buộc và 25 tín chỉ tự chọn. 
+			Tuy nhiên, nếu không viết khóa luận, cần xem xét thêm điều kiện <a href="#KhóaLuận">tại đây</a>.
+			<p>
+				<b>Chú ý:</b> Phần bắt buộc có thể lên trên 60 tín chỉ khi số tín chỉ của môn học thay đổi so với chương trình cũ nhưng phần tự chọn luôn luôn tối thiểu 25 tín chỉ(nếu viết khóa luận) hoặc 35 tín chỉ(nếu không viết khóa luận).
+			</p>
+		</div>
+	</div>
+	<div id="KhóaLuận" class="row">
+		<div class="col-sm-12">
+		<a href="#KhóaLuận"><h2>Khóa luận hoặc tương đương</h2></a>
+		</div>
+		<div class="col-sm-12">
+		<p>
+			Nếu viết khóa luận, cố gắng hoàn thành khóa luận.
+		</p>
+		<p>
+			Nếu không viết khóa luận, cần học bổ sung 10 tín chỉ khối giáo dục chuyên nghiệp phần tự chọn. 
+			<br /><b>Chú ý: </b>Hiện nay có một số tín chỉ khối giáo dục chuyên nghiệp phần bắt buộc tăng lên, khiến tổng số tín chỉ phần đó tăng lên trên 60 tín chỉ. 
+			Có một số thông tin nói rằng số tín chỉ tăng lên đó có thể được bù cho phần tự chọn.
+			<br /><b>Ví dụ:</b> phần bắt buộc 61 tín chỉ, phần tự chọn 34 tín chỉ vẫn là hợp lệ.
+			<br />Tuy nhiên, kinh nghiệm bao năm mách bảo rằng khi chưa có thông báo chính thức thì mọi chuyện đều có thể xảy ra.
+		</p>
+<!-- 			Vậy nên, quy định này có thể thay đổi một chút theo hướng chỉ cần đủ 95 tín chỉ phần giáo dục chuyên nghiệp(bao gồm cả bắt buộc và tự chọn),  -->
+<!-- 			</p> -->
+<!-- 			<p> -->
+<!-- 			<b>(*)</b> Phần này không có thông báo hay quy chế chính thức mà chỉ từ kết quả trả lời của cán bộ nên cần thời gian xác nhận lại. -->
+<!-- 			</p> -->
+		</div>
+	</div>
+</div>
+{% endblock %}

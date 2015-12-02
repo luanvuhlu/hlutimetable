@@ -1,6 +1,13 @@
-.hidden{
+
+.hidden {
 	display: none;
 }
-#dragandrophandler, .abort{
+
+#dragandrophandler, .abort {
 	cursor: pointer;
+}
+
+.warn-msg {
+	display: none;
+	color: red;
 }

@@ -12,7 +12,7 @@ from uploadhandler import parse_timetable
 from models import Student, TimeTable, Subject, SubjectClass, SubjectStudyDay
 from uploadhandler import CreateUploadUrl, UploadHandler
 
-
+BASE_PATH = os.path.dirname(__file__)
 
 class MainPage(webapp.RequestHandler): 
     def get(self):
@@ -29,10 +29,14 @@ class MainPage(webapp.RequestHandler):
             'is_admin': users.is_current_user_admin()
             }
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/index-beta.html')
+            path = os.path.join(BASE_PATH, 'templates/index.html')
             self.response.out.write(template.render(path, template_values))
         else:
             self.redirect(users.create_login_url(self.request.uri))
+class About(webapp.RequestHandler):
+    def get(self, *args):
+        path = os.path.join(BASE_PATH, 'templates/index.html')
+        self.response.out.write(template.render(path, []))
 class UploadPage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
@@ -48,15 +52,36 @@ class UploadPage(webapp.RequestHandler):
             'is_admin': users.is_current_user_admin()
             }
             
-            path = os.path.join(os.path.dirname(__file__), 'templates/upload.html')
+            path = os.path.join(BASE_PATH, 'templates/upload.html')
             self.response.out.write(template.render(path, template_values))
         else:
             self.redirect(users.create_login_url(self.request.uri))
+class ViewInfo(webapp.RequestHandler):
+    def get(self):
+        path =  os.path.join(BASE_PATH, 'templates/view_info.html')
+        self.response.out.write(template.render(path, {}))
+class Structure(webapp.RequestHandler):
+    def get(self, *args):
+        path =  os.path.join(BASE_PATH, 'templates/structure.html')
+        self.response.out.write(template.render(path, {}))
+class MarkTest(webapp.RequestHandler):
+    def get(self, *args):
+        filePath =  'templates/mark_test.html'
+        if self.request.get('t') == "c":
+            filePath = 'templates/condition_test.html'
+        elif self.request.get('t') == "m":
+            filePath = 'templates/mark_test.html'
+        self.response.out.write(template.render(os.path.join(BASE_PATH, filePath), {}))
 application = webapp.WSGIApplication([
-                                      ('/', MainPage),
-                                      ('/upload-form-ajax', CreateUploadUrl),
-                                      ('/upload-page', UploadPage),
-                                      ('/upload', UploadHandler)
+                                    ('/', About),
+                                      # Tạm thời ẩn đi
+#                                       ('/upload-page', UploadPage),
+                                      ('/ViewInfo', ViewInfo),
+                                      ('/structure', Structure),
+                                      ('/test', MarkTest),
+                                      # Ajax
+                                      ('/upload', UploadHandler),
+                                      ('/upload-form-ajax', CreateUploadUrl)
                                     ], debug=True)
 def main():
     run_wsgi_app(application)
